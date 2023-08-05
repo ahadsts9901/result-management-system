@@ -107,7 +107,7 @@ function renderStudent() {
                 let thObt = document.createElement("th");
                 thObt.innerText = "Obt";
                 let thPer = document.createElement("th");
-                thPer.innerText = "Per%";
+                thPer.innerText = "Per %";
                 let grade = document.createElement("th");
                 grade.innerText = "Grade";
                 let act = document.createElement("th");
@@ -197,7 +197,7 @@ function renderStudent() {
                     tr.appendChild(obt);
 
                     let per = document.createElement("td")
-                    per.innerText = (Number(obt.innerText) / 500 * 100).toFixed(2) + " %";
+                    per.innerText = (Number(obt.innerText) / 500 * 100).toFixed(2) + "%";
                     tr.appendChild(per);
 
                     let grade = document.createElement("td")
