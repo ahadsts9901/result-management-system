@@ -23,22 +23,21 @@
     <h2 class="center">Result Management System</h2>
 
     <form onsubmit="addStudent(event)">
-        <input type="text" class="input" id="name" placeholder="Name...">
-        <input type="text" class="input" id="father" placeholder="Father...">
-        <input type="text" class="input" id="rollNo" placeholder="Roll No...">
-        <input type="text" class="input" id="eng" placeholder="English Marks (0-100)">
-        <input type="text" class="input" id="urd" placeholder="Urdu Marks (0-100)">
-        <input type="text" class="input" id="mat" placeholder="Math Marks (0-100)">
-        <input type="text" class="input" id="sin" placeholder="Sindhi Marks (0-100)">
-        <input type="text" class="input" id="isl" placeholder="Islamiat Marks (0-100)">
+        <input required type="text" class="input" id="name" placeholder="Name..." minlength="4" maxlength="10">
+        <input required type="text" class="input" id="father" placeholder="Father..." minlength="4" maxlength="10">
+        <input required type="number" class="input" id="rollNo" placeholder="Roll No..." min="0" max="999999">
+        <input required type="number" class="input" id="eng" placeholder="English Marks (0-100)" min="0" max="100" step="0.1">
+        <input required type="number" class="input" id="urd" placeholder="Urdu Marks (0-100)" min="0" max="100" step="0.1">
+        <input required type="number" class="input" id="mat" placeholder="Math Marks (0-100)" min="0" max="100" step="0.1">
+        <input required type="number" class="input" id="sin" placeholder="Sindhi Marks (0-100)" min="0" max="100" step="0.1">
+        <input required type="number" class="input" id="isl" placeholder="Islamiat Marks (0-100)" min="0" max="100" step="0.1">
         <button type="submit" class="submit">+ Submit</button>
     </form>
 
-    <div class="results">
+    <h2 class="center">Results</h2>
+    <div class="results"></div>
 
-    </div>
-
-    <p class="center">Thanks For Visiting Regards! Muhammad Ahad&copy;</p>
+    <!-- <p class="center">Thanks For Visiting Regards! Muhammad Ahad&copy;</p> -->
 
     <!-- firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

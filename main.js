@@ -1,0 +1,358 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyCMng_8MwnzIoWiRS2_AyVyYMplV5QcE1c",
+    authDomain: "students-management-syst-28aac.firebaseapp.com",
+    projectId: "students-management-syst-28aac",
+    storageBucket: "students-management-syst-28aac.appspot.com",
+    messagingSenderId: "76794892993",
+    appId: "1:76794892993:web:39ca0e90b1d98808343a40",
+    measurementId: "G-G0PYS1MSLT"
+};
+
+firebase.initializeApp(firebaseConfig);
+let db = firebase.firestore();
+
+function addStudent(event) {
+    event.preventDefault()
+    let name = document.querySelector("#name")
+    let father = document.querySelector("#father")
+    let rollNo = document.querySelector("#rollNo")
+    let eng = document.querySelector("#eng")
+    let urd = document.querySelector("#urd")
+    let mat = document.querySelector("#mat")
+    let sin = document.querySelector("#sin")
+    let isl = document.querySelector("#isl")
+    let timestamp = firebase.firestore.Timestamp.now().toMillis();
+
+    db.collection("data")
+        .add({
+            name: name.value,
+            father: father.value,
+            rollNo: rollNo.value,
+            eng: eng.value,
+            urd: urd.value,
+            mat: mat.value,
+            sin: sin.value,
+            isl: isl.value,
+            timestamp: timestamp,
+        })
+        .then(function(docRef) {
+            // console.log("Document added successfully. ID:", docRef.id);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Added Successfully'
+            })
+            renderStudent();
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+
+    name.value = ""
+    father.value = ""
+    rollNo.value = ""
+    eng.value = ""
+    urd.value = ""
+    mat.value = ""
+    sin.value = ""
+    isl.value = ""
+
+}
+
+function renderStudent() {
+    let container = document.querySelector(".results");
+    container.innerHTML = "";
+
+    db.collection("data")
+        .orderBy("timestamp", "desc")
+        .get()
+        .then(function(querySnapshot) {
+            if (querySnapshot.size === 0) {
+                container.innerHTML = "<div class='not'>No Data Found</div>";
+            } else {
+                let table = document.createElement("table");
+                let thead = document.createElement("thead");
+                let tr = document.createElement("tr");
+                let sNo = document.createElement("th");
+                sNo.innerText = "No";
+                let thName = document.createElement("th");
+                thName.innerText = "Name";
+                let thFather = document.createElement("th");
+                thFather.innerText = "Father";
+                let thRollNo = document.createElement("th");
+                thRollNo.innerText = "Roll No";
+                let thEng = document.createElement("th");
+                thEng.innerText = "English";
+                let thUrd = document.createElement("th");
+                thUrd.innerText = "Urdu";
+                let thMat = document.createElement("th");
+                thMat.innerText = "Math";
+                let thIsl = document.createElement("th");
+                thIsl.innerText = "Islamiat";
+                let thSin = document.createElement("th");
+                thSin.innerText = "Sindhi";
+                let thTotal = document.createElement("th");
+                thTotal.innerText = "Total";
+                let thObt = document.createElement("th");
+                thObt.innerText = "Obt";
+                let thPer = document.createElement("th");
+                thPer.innerText = "Per%";
+                let grade = document.createElement("th");
+                grade.innerText = "Grade";
+                let act = document.createElement("th");
+                act.innerText = "Actions";
+
+                tr.appendChild(sNo);
+                tr.appendChild(thName);
+                tr.appendChild(thFather);
+                tr.appendChild(thRollNo);
+                tr.appendChild(thEng);
+                tr.appendChild(thUrd);
+                tr.appendChild(thMat);
+                tr.appendChild(thIsl);
+                tr.appendChild(thSin);
+                tr.appendChild(thTotal);
+                tr.appendChild(thObt);
+                tr.appendChild(thPer);
+                tr.appendChild(grade);
+                tr.appendChild(act);
+                thead.appendChild(tr);
+                table.appendChild(thead);
+
+                let tbody = document.createElement("tbody");
+                let num = 1
+                querySnapshot.forEach(function(doc) {
+                    let data = doc.data();
+                    // console.log(data);
+                    let tr = document.createElement("tr");
+
+                    let sNo = document.createElement("td");
+                    sNo.innerText = num++;
+                    tr.appendChild(sNo);
+
+                    let name = document.createElement("td");
+                    name.innerText = data.name;
+                    tr.appendChild(name);
+
+                    let father = document.createElement("td");
+                    father.innerText = data.father;
+                    tr.appendChild(father);
+
+                    let rollNo = document.createElement("td");
+                    rollNo.innerText = data.rollNo;
+                    tr.appendChild(rollNo);
+
+                    let eng = document.createElement("td");
+                    eng.innerText = data.eng;
+                    if (Number(eng.innerText) < 33) {
+                        eng.style.color = "#e55865"
+                    }
+                    tr.appendChild(eng);
+
+                    let urd = document.createElement("td");
+                    urd.innerText = data.urd;
+                    if (Number(urd.innerText) < 33) {
+                        urd.style.color = "#e55865"
+                    }
+                    tr.appendChild(urd);
+
+                    let mat = document.createElement("td");
+                    mat.innerText = data.mat;
+                    if (Number(mat.innerText) < 33) {
+                        mat.style.color = "#e55865"
+                    }
+                    tr.appendChild(mat);
+
+                    let isl = document.createElement("td");
+                    isl.innerText = data.isl;
+                    if (Number(isl.innerText) < 33) {
+                        isl.style.color = "#e55865"
+                    }
+                    tr.appendChild(isl);
+
+                    let sin = document.createElement("td");
+                    sin.innerText = data.sin;
+                    if (Number(sin.innerText) < 33) {
+                        sin.style.color = "#e55865"
+                    }
+                    tr.appendChild(sin);
+
+                    let total = document.createElement("td")
+                    total.innerText = 500;
+                    tr.appendChild(total);
+
+                    let obt = document.createElement("td")
+                    obt.innerText = Number(data.eng) + Number(data.urd) + Number(data.mat) + Number(data.isl) + Number(data.sin);
+                    tr.appendChild(obt);
+
+                    let per = document.createElement("td")
+                    per.innerText = (Number(obt.innerText) / 500 * 100).toFixed(2) + "%";
+                    tr.appendChild(per);
+
+                    let grade = document.createElement("td")
+                    let percentage = per.innerText
+                    let finalGrade = ""
+                    if (percentage >= "80") {
+                        finalGrade = "A+"
+                    } else if (percentage >= "70") {
+                        finalGrade = "A"
+                    } else if (percentage >= "60") {
+                        finalGrade = "B"
+                    } else if (percentage >= "50") {
+                        finalGrade = "C"
+                    } else if (percentage >= "40") {
+                        finalGrade = "D"
+
+                    } else if (percentage >= "33") {
+                        finalGrade = "E"
+
+                    } else {
+                        finalGrade = "Fail"
+                    }
+
+                    grade.innerText = finalGrade;
+                    if (grade.innerText === "Fail") {
+                        grade.style.color = "#e55865"
+                    }
+                    tr.appendChild(grade);
+
+                    let buttons = document.createElement("td")
+                    buttons.className += "row"
+
+                    let edit = document.createElement("i")
+                    edit.style.color = "#33b861"
+                    edit.className += "bi bi-pencil-fill"
+                    edit.addEventListener("click", function() {
+                        // editStudent(doc.id);
+                    });
+                    let del = document.createElement("i")
+                    del.style.color = "#e55865"
+                    del.className += "bi bi-trash-fill"
+                    del.addEventListener("click", function() {
+                        deleteStudent(doc.id);
+                    });
+                    buttons.appendChild(edit)
+                    buttons.appendChild(del)
+                    tr.appendChild(buttons);
+
+                    tbody.appendChild(tr);
+                });
+
+                table.appendChild(tbody);
+                container.appendChild(table);
+            }
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+}
+
+function deleteStudent(docId) {
+    Swal.fire({
+        title: 'Enter Password to Delete',
+        input: 'password',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonColor: '#15182b',
+        cancelButtonColor: '#15182b',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        preConfirm: (password) => {
+            const requiredPassword = '12345';
+
+            if (password !== requiredPassword) {
+                Swal.showValidationMessage('Invalid password');
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            db.collection("data").doc(docId).delete()
+                .then(() => {
+                    // console.log("Document deleted successfully.");
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Deleted Successfully'
+                    })
+                    renderStudent();
+                })
+                .catch((error) => {
+                    console.error("Error deleting document: ", error);
+                });
+        }
+    });
+}
+
+// edit
+
+// function editStudent(docId, currentData) {
+//     Swal.fire({
+//         title: 'Edit Student',
+//         html: `
+//             <input placeholder="Name" id="editName" class="swal2-input" value="" required>
+//             <input placeholder="Father" id="editFather" class="swal2-input" value="" required>
+//             <input placeholder="Roll No" id="editRollNo" class="swal2-input" value="" type="number" required>
+//             <input placeholder="English" id="editEng" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+//             <input placeholder="Urdu" id="editUrd" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+//             <input placeholder="Math" id="editMat" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+//             <input placeholder="Sindhi" id="editSin" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+//             <input placeholder="ISlamiat" id="editIsl" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+//         `,
+//         showCancelButton: true,
+//         confirmButtonColor: '#15182b',
+//         cancelButtonColor: '#15182b',
+//         confirmButtonText: 'Delete',
+//         cancelButtonText: 'Cancel',
+//         preConfirm: () => {
+//             const editedData = {
+//                 name: document.getElementById('editName').value,
+//                 father: document.getElementById('editFather').value,
+//                 rollNo: parseInt(document.getElementById('editRollNo').value),
+//                 eng: parseFloat(document.getElementById('editEng').value),
+//                 urd: parseFloat(document.getElementById('editUrd').value),
+//                 mat: parseFloat(document.getElementById('editMat').value),
+//                 sin: parseFloat(document.getElementById('editSin').value),
+//                 isl: parseFloat(document.getElementById('editIsl').value),
+//                 timestamp: firebase.firestore.Timestamp.now().toMillis()
+//             };
+//             // Update the data in Firestore
+//             db.collection("data").doc(docId).update(editedData)
+//                 .then(() => {
+//                     console.log("Document updated successfully.");
+//                     renderStudent(); // Render the updated student list
+//                 })
+//                 .catch((error) => {
+//                     console.error("Error updating document: ", error);
+//                 });
+//         }
+//     });
+// }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    renderStudent();
+});
