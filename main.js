@@ -234,7 +234,7 @@ function renderStudent() {
                     edit.style.color = "#33b861"
                     edit.className += "bi bi-pencil-fill"
                     edit.addEventListener("click", function () {
-                        editStudent(doc.id);
+                        editStudent(doc.id, data);
                     });
                     let del = document.createElement("i")
                     del.style.color = "#e55865"
@@ -254,7 +254,7 @@ function renderStudent() {
             }
         })
         .catch(function (error) {
-            console.log("Error getting documents: ", error);
+            console.error("Error getting documents: ", error);
         });
 }
 
@@ -312,6 +312,7 @@ function deleteStudent(docId) {
 // edit
 
 function editStudent(docId, currentData) {
+    // console.log(currentData, docId)
     Swal.fire({
         title: 'Enter Password to Edit',
         input: 'password',
@@ -333,14 +334,14 @@ function editStudent(docId, currentData) {
                 Swal.fire({
                     title: 'Edit Student',
                     html: `
-                        <input placeholder="Name" id="editName" class="swal2-input" value="" required>
-                        <input placeholder="Father" id="editFather" class="swal2-input" value="" required>
-                        <input placeholder="Roll No" id="editRollNo" class="swal2-input" value="" type="number" required>
-                        <input placeholder="English" id="editEng" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-                        <input placeholder="Urdu" id="editUrd" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-                        <input placeholder="Math" id="editMat" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-                        <input placeholder="Sindhi" id="editSin" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-                        <input placeholder="ISlamiat" id="editIsl" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+                    <input placeholder="Name" id="editName" class="swal2-input" value="${currentData.name}" required>
+                    <input placeholder="Father" id="editFather" class="swal2-input" value="${currentData.father}" required>
+                    <input placeholder="Roll No" id="editRollNo" class="swal2-input" value="${currentData.rollNo}" type="number" required>
+                    <input placeholder="English" id="editEng" class="swal2-input" value="${currentData.eng}" type="number" min="0" max="100" step="0.1" required>
+                    <input placeholder="Urdu" id="editUrd" class="swal2-input" value="${currentData.urd}" type="number" min="0" max="100" step="0.1" required>
+                    <input placeholder="Math" id="editMat" class="swal2-input" value="${currentData.mat}" type="number" min="0" max="100" step="0.1" required>
+                    <input placeholder="Sindhi" id="editSin" class="swal2-input" value="${currentData.sin}" type="number" min="0" max="100" step="0.1" required>
+                    <input placeholder="ISlamiat" id="editIsl" class="swal2-input" value="${currentData.isl}" type="number" min="0" max="100" step="0.1" required>
                     `,
                     showCancelButton: true,
                     confirmButtonColor: '#15182b',
