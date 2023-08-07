@@ -35,7 +35,7 @@ function addStudent(event) {
             isl: isl.value,
             timestamp: timestamp,
         })
-        .then(function(docRef) {
+        .then(function (docRef) {
             // console.log("Document added successfully. ID:", docRef.id);
             const Toast = Swal.mixin({
                 toast: true,
@@ -55,7 +55,7 @@ function addStudent(event) {
             })
             renderStudent();
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.error("Error adding document: ", error);
         });
 
@@ -77,7 +77,7 @@ function renderStudent() {
     db.collection("data")
         .orderBy("timestamp", "desc")
         .get()
-        .then(function(querySnapshot) {
+        .then(function (querySnapshot) {
             if (querySnapshot.size === 0) {
                 container.innerHTML = "<div class='not'>No Data Found</div>";
             } else {
@@ -132,7 +132,7 @@ function renderStudent() {
 
                 let tbody = document.createElement("tbody");
                 let num = 1
-                querySnapshot.forEach(function(doc) {
+                querySnapshot.forEach(function (doc) {
                     let data = doc.data();
                     // console.log(data);
                     let tr = document.createElement("tr");
@@ -233,13 +233,13 @@ function renderStudent() {
                     let edit = document.createElement("i")
                     edit.style.color = "#33b861"
                     edit.className += "bi bi-pencil-fill"
-                    edit.addEventListener("click", function() {
-                        // editStudent(doc.id);
+                    edit.addEventListener("click", function () {
+                        editStudent(doc.id);
                     });
                     let del = document.createElement("i")
                     del.style.color = "#e55865"
                     del.className += "bi bi-trash-fill"
-                    del.addEventListener("click", function() {
+                    del.addEventListener("click", function () {
                         deleteStudent(doc.id);
                     });
                     buttons.appendChild(edit)
@@ -253,10 +253,12 @@ function renderStudent() {
                 container.appendChild(table);
             }
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log("Error getting documents: ", error);
         });
 }
+
+// delete
 
 function deleteStudent(docId) {
     Swal.fire({
@@ -309,50 +311,114 @@ function deleteStudent(docId) {
 
 // edit
 
-// function editStudent(docId, currentData) {
-//     Swal.fire({
-//         title: 'Edit Student',
-//         html: `
-//             <input placeholder="Name" id="editName" class="swal2-input" value="" required>
-//             <input placeholder="Father" id="editFather" class="swal2-input" value="" required>
-//             <input placeholder="Roll No" id="editRollNo" class="swal2-input" value="" type="number" required>
-//             <input placeholder="English" id="editEng" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-//             <input placeholder="Urdu" id="editUrd" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-//             <input placeholder="Math" id="editMat" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-//             <input placeholder="Sindhi" id="editSin" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-//             <input placeholder="ISlamiat" id="editIsl" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
-//         `,
-//         showCancelButton: true,
-//         confirmButtonColor: '#15182b',
-//         cancelButtonColor: '#15182b',
-//         confirmButtonText: 'Delete',
-//         cancelButtonText: 'Cancel',
-//         preConfirm: () => {
-//             const editedData = {
-//                 name: document.getElementById('editName').value,
-//                 father: document.getElementById('editFather').value,
-//                 rollNo: parseInt(document.getElementById('editRollNo').value),
-//                 eng: parseFloat(document.getElementById('editEng').value),
-//                 urd: parseFloat(document.getElementById('editUrd').value),
-//                 mat: parseFloat(document.getElementById('editMat').value),
-//                 sin: parseFloat(document.getElementById('editSin').value),
-//                 isl: parseFloat(document.getElementById('editIsl').value),
-//                 timestamp: firebase.firestore.Timestamp.now().toMillis()
-//             };
-//             // Update the data in Firestore
-//             db.collection("data").doc(docId).update(editedData)
-//                 .then(() => {
-//                     console.log("Document updated successfully.");
-//                     renderStudent(); // Render the updated student list
-//                 })
-//                 .catch((error) => {
-//                     console.error("Error updating document: ", error);
-//                 });
-//         }
-//     });
-// }
+function editStudent(docId, currentData) {
+    Swal.fire({
+        title: 'Enter Password to Edit',
+        input: 'password',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonColor: '#15182b',
+        cancelButtonColor: '#15182b',
+        confirmButtonText: 'Edit',
+        cancelButtonText: 'Cancel',
+        preConfirm: (password) => {
+            const requiredPassword = '12345';
+
+            if (password !== requiredPassword) {
+                Swal.showValidationMessage('Invalid password');
+            } else {
+                // Show the edit form with current data
+                Swal.fire({
+                    title: 'Edit Student',
+                    html: `
+                        <input placeholder="Name" id="editName" class="swal2-input" value="" required>
+                        <input placeholder="Father" id="editFather" class="swal2-input" value="" required>
+                        <input placeholder="Roll No" id="editRollNo" class="swal2-input" value="" type="number" required>
+                        <input placeholder="English" id="editEng" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+                        <input placeholder="Urdu" id="editUrd" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+                        <input placeholder="Math" id="editMat" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+                        <input placeholder="Sindhi" id="editSin" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+                        <input placeholder="ISlamiat" id="editIsl" class="swal2-input" value="" type="number" min="0" max="100" step="0.1" required>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonColor: '#15182b',
+                    cancelButtonColor: '#15182b',
+                    confirmButtonText: 'Save',
+                    cancelButtonText: 'Cancel',
+                    preConfirm: () => {
+                        // Check for empty fields
+                        const editName = document.getElementById('editName').value;
+                        const editFather = document.getElementById('editFather').value;
+                        const editRollNo = document.getElementById('editRollNo').value;
+                        const editEng = parseFloat(document.getElementById('editEng').value);
+                        const editUrd = parseFloat(document.getElementById('editUrd').value);
+                        const editMat = parseFloat(document.getElementById('editMat').value);
+                        const editSin = parseFloat(document.getElementById('editSin').value);
+                        const editIsl = parseFloat(document.getElementById('editIsl').value);
+
+                        // Validate subject marks to be within the range of 0 to 100
+                        if (
+                            editName.trim() === '' ||
+                            editFather.trim() === '' ||
+                            editRollNo.trim() === '' ||
+                            isNaN(editEng) || editEng < 0 || editEng > 100 ||
+                            isNaN(editUrd) || editUrd < 0 || editUrd > 100 ||
+                            isNaN(editMat) || editMat < 0 || editMat > 100 ||
+                            isNaN(editSin) || editSin < 0 || editSin > 100 ||
+                            isNaN(editIsl) || editIsl < 0 || editIsl > 100 ||
+                            editName.length > 10 || editName.length < 4 ||
+                            editFather.length > 10 || editFather.length < 4 ||
+                            editRollNo > 999999
+                        ) {
+                            Swal.showValidationMessage('Please fill in all fields with valid subject marks (0-100) and valid length of fields');
+                            return false;
+                        }
+
+                        // Get the edited data from the form
+                        const editedData = {
+                            name: editName,
+                            father: editFather,
+                            rollNo: parseInt(editRollNo),
+                            eng: editEng,
+                            urd: editUrd,
+                            mat: editMat,
+                            sin: editSin,
+                            isl: editIsl
+                        };
+                        // Update the data in Firestore
+                        db.collection("data").doc(docId).update(editedData)
+                            .then(() => {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 1000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                });
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Edited Successfully'
+                                });
+                                renderStudent(); // Render the updated student list
+                            })
+                            .catch((error) => {
+                                console.error("Error updating document: ", error);
+                            });
+                    }
+                });
+            }
+        }
+    });
+}
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     renderStudent();
 });
