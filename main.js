@@ -341,7 +341,7 @@ function editStudent(docId, currentData) {
                     <input placeholder="Urdu" id="editUrd" class="swal2-input" value="${currentData.urd}" type="number" min="0" max="100" step="0.1" required>
                     <input placeholder="Math" id="editMat" class="swal2-input" value="${currentData.mat}" type="number" min="0" max="100" step="0.1" required>
                     <input placeholder="Sindhi" id="editSin" class="swal2-input" value="${currentData.sin}" type="number" min="0" max="100" step="0.1" required>
-                    <input placeholder="ISlamiat" id="editIsl" class="swal2-input" value="${currentData.isl}" type="number" min="0" max="100" step="0.1" required>
+                    <input placeholder="Islamiat" id="editIsl" class="swal2-input" value="${currentData.isl}" type="number" min="0" max="100" step="0.1" required>
                     `,
                     showCancelButton: true,
                     confirmButtonColor: '#15182b',
